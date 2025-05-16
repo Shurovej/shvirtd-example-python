@@ -1,15 +1,5 @@
 FROM python:3.9-slim
 WORKDIR /app
-
-# Устанавливаем зависимости для ожидания MySQL
-RUN apt-get update && \
-    apt-get install -y wait-for-it && \
-    rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
 COPY . .
-
-# Скрипт для ожидания БД и запуска приложения
-CMD ["sh", "-c", "wait-for-it db:3306 --timeout=60 -- python main.py"]
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "main.py"]
